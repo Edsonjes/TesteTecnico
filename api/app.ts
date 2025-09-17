@@ -1,14 +1,16 @@
-import express from 'express';
+
 import cors from 'cors';
 import router from'./src/Routers/Router.js';
 import dotenv from 'dotenv';
+import express from 'express';
+dotenv.config();
 const app = express();
 
 app.use(cors());
 
 app.use(express.json());
 
-app.get('/api', (req, res) => {
+app.get('/api', (req:express.Request, res:express.Response) => {
     res.json({message:"API funcionando"});
 });
 
@@ -16,13 +18,13 @@ app.get('/api', (req, res) => {
 app.use(router);
 
 // Middleware para lidar com erros 
-app.use((err, req, res, next) => {
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err.stack);
-    res.status(500).json({message:"Erro interno do servidor"});
+    res.status(500).json({ message: "Erro interno do servidor" });
 });
 
 // Middleware para lidar com rotas não encontradas
-app.use(( err,req, res, next) => {
+app.use(( err:any,req:express.Request, res:express.Response) => {
     console.error(err.stack);
     res.status(404).json({message:"Rota não encontrada"});
 });
